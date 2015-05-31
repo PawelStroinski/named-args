@@ -42,12 +42,17 @@
   "Similar to defn but all args of the function defined are named and non-optional.
    Custom argument destructuring, variadic args & overloads are not supported."
   {:arglists '([name doc-string? attr-map? [params*] prepost-map? body])}
-  [name & spec]
+  [name & decls]
   (let [arguments (gensym "arguments")]
-    (match (vec spec)
+    (match (vec decls)
            [[& args] & body] `(defn ~name ~(params args arguments) ~(pre args arguments body) ~@(dobody body))
            [doc-string-or-attr-map [& args] & body] `(defn ~name ~doc-string-or-attr-map ~(params args arguments)
                                                        ~(pre args arguments body) ~@(dobody body))
            [doc-string attr-map [& args] & body] `(defn ~name ~doc-string ~attr-map ~(params args arguments)
                                                     ~(pre args arguments body) ~@(dobody body))
            )))
+
+(defmacro defnam-
+  "Same as defnam but the function defined is private."
+  [name & decls]
+  (list* `defnam (with-meta name (assoc (meta name) :private true)) decls))

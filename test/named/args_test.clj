@@ -1,6 +1,6 @@
 (ns named.args-test
   (:require [clojure.test :refer :all]
-            [named.args :refer [defnam]])
+            [named.args :refer [defnam defnam-]])
   (:import (clojure.lang ExceptionInfo)))
 
 (defn check-doc-string [foo]
@@ -17,6 +17,9 @@
 
 (defn check-not-prepost-map [foo]
   (is (= {:pre [false] :post [false]} (foo :bar1 1 :bar2 2))))
+
+(defn check-private [foo]
+  (is (:private (meta foo))))
 
 (defn foo-fixture [f]
   (defnam foo [bar1 bar2]
@@ -76,6 +79,17 @@
   (defnam foo [bar1 bar2]
           {:pre [false] :post [false]})
   (check-not-prepost-map foo)
+
+  (defnam- foo
+           "foodoc"
+           [bar1 bar2]
+           {:pre [(< bar1 10)] :post [(< % 20)]}
+           (+ bar1 bar2))
+  (f)
+  (check-doc-string #'foo)
+  (check-pre-in-prepost-map foo)
+  (check-post-in-prepost-map foo)
+  (check-private #'foo)
 
   (ns-unmap 'named.args-test 'foo)
   )
