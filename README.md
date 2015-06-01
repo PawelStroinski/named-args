@@ -3,12 +3,14 @@
 A Clojure library designed to help with non-optional named function arguments.
 Internally it's using Clojure keyword arguments and a precondition.
 
+[![Clojars Project](http://clojars.org/org.clojars.pawel/named-args/latest-version.svg)](http://clojars.org/org.clojars.pawel/named-args)
+
 ## Usage
 
     (require '[named.args :refer [defnam defnam-]])
 
     (defnam start-washing-machine
-      "Starts washing process."
+      "Starts the washing process."
       {:example true}
       [clothes temperature]
       {:post [(.contains % "washing")]}

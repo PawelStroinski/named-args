@@ -1,4 +1,4 @@
-(defproject named-args "0.1.0-SNAPSHOT"
+(defproject org.clojars.pawel/named-args "0.1.0"
   :description "A Clojure library designed to help with non-optional named function arguments."
   :url "https://github.com/PawelStroinski/named-args"
   :license {:name "Eclipse Public License"
